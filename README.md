@@ -10,29 +10,41 @@
 ## 项目结构
 - `index.html`: 总览。用一个集中的控制台 UI 展示理念框架、代表性证据、核心项目线索和边界原则。
 - `diary.html`: 日记存档。用于承载几十张脱敏截图，按日期记录真实的交接证据。
-- `data/diary.json`: 日记数据管理中心。
+- `content/diary/*.md`: 每条日记一篇 Markdown，包含 frontmatter 和正文复盘点。
+- `data/diary-manifest.json`: 日记文件清单。纯静态 GitHub Pages 不能自动枚举目录，所以这里仅保存 Markdown 路径。
 - `scripts/diary.js`: 日记流动态渲染逻辑。
 - `styles.css`: 采用 "Engineer Archive" 设计风格的全局样式。
 - `assets/screenshots/`: 存放脱敏后的截图证据。
 
 ## 如何添加新记录
 1. **脱敏截图**: 将截图证据放入 `assets/screenshots/`，确保隐藏所有敏感信息。
-2. **编辑数据**: 在 `data/diary.json` 中添加一个新对象：
-   ```json
-   {
-     "id": "unique-id",
-     "date": "YYYY-MM-DD",
-     "title": "记录标题",
-     "type": "类型(engineering/reflection/etc)",
-     "tags": ["标签1", "标签2"],
-     "summary": "简短摘要",
-     "notes": ["关键点1", "关键点2"],
-     "screenshots": [
-       { "src": "./assets/screenshots/your-image.png", "caption": "截图描述" }
-     ]
-   }
+2. **新增 Markdown**: 在 `content/diary/` 中新增一篇记录，例如：
+   ```md
+   ---
+   id: "unique-id"
+   date: 2026-05-21
+   title: "记录标题"
+   type: engineering
+   tags:
+     - Agent
+     - Harness
+   summary: "简短摘要"
+   screenshots:
+     - src: "./assets/screenshots/your-image.png"
+       caption: "脱敏截图说明"
+   ---
+
+   ## 记录摘要
+
+   简短摘要。
+
+   ## 复盘点
+
+   - 关键点 1
+   - 关键点 2
    ```
-3. **预览**: 使用本地 HTTP 服务预览，例如 `python -m http.server 8080`。
+3. **更新清单**: 将新文件路径加入 `data/diary-manifest.json`。
+4. **预览**: 使用本地 HTTP 服务预览，例如 `python -m http.server 8080`。
 
 ## 设计原则
 - **专业克制**: 避免花哨装饰，保持工程师档案的清晰与可信。

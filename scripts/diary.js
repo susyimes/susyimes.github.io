@@ -3,13 +3,111 @@ const tagFilter = document.querySelector("#tagFilter");
 const statsCounter = document.querySelector("#statsCounter");
 
 const escapeHtml = (value = "") =>
-  value.replace(/[&<>"']/g, (char) => ({
+  String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     '"': "&quot;",
     "'": "&#039;",
   })[char]);
+
+const parseScalar = (value = "") => {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return "";
+  }
+
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"'))
+    || (trimmed.startsWith("[") && trimmed.endsWith("]"))
+    || (trimmed.startsWith("{") && trimmed.endsWith("}"))
+  ) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return trimmed.replace(/^"|"$/g, "");
+    }
+  }
+
+  return trimmed;
+};
+
+const parseFrontmatter = (frontmatter) => {
+  const data = {};
+  let currentKey = null;
+  let currentObject = null;
+
+  frontmatter.split(/\r?\n/).forEach((line) => {
+    if (!line.trim()) return;
+
+    const keyMatch = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (keyMatch) {
+      currentKey = keyMatch[1];
+      currentObject = null;
+      const rawValue = keyMatch[2];
+      data[currentKey] = rawValue ? parseScalar(rawValue) : [];
+      return;
+    }
+
+    const objectItemMatch = line.match(/^\s*-\s+([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (objectItemMatch && currentKey) {
+      if (!Array.isArray(data[currentKey])) data[currentKey] = [];
+      currentObject = {
+        [objectItemMatch[1]]: parseScalar(objectItemMatch[2]),
+      };
+      data[currentKey].push(currentObject);
+      return;
+    }
+
+    const objectPropMatch = line.match(/^\s+([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (objectPropMatch && currentObject) {
+      currentObject[objectPropMatch[1]] = parseScalar(objectPropMatch[2]);
+      return;
+    }
+
+    const listItemMatch = line.match(/^\s*-\s+(.*)$/);
+    if (listItemMatch && currentKey) {
+      if (!Array.isArray(data[currentKey])) data[currentKey] = [];
+      data[currentKey].push(parseScalar(listItemMatch[1]));
+    }
+  });
+
+  return data;
+};
+
+const extractNotes = (markdown) => {
+  const notesSection = markdown.match(/##\s*复盘点\s*\n+([\s\S]*?)(?:\n##\s+|$)/);
+  const source = notesSection ? notesSection[1] : markdown;
+
+  return source
+    .split(/\r?\n/)
+    .map((line) => line.match(/^\s*-\s+(.*)$/))
+    .filter(Boolean)
+    .map((match) => match[1].trim())
+    .filter(Boolean);
+};
+
+const parseDiaryMarkdown = (markdown, source) => {
+  const match = markdown.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
+
+  if (!match) {
+    throw new Error(`${source}: 缺少 frontmatter`);
+  }
+
+  const metadata = parseFrontmatter(match[1]);
+  const body = match[2].trim();
+  const notes = extractNotes(body);
+
+  return {
+    ...metadata,
+    source,
+    body,
+    tags: Array.isArray(metadata.tags) ? metadata.tags : [],
+    notes,
+    screenshots: Array.isArray(metadata.screenshots) ? metadata.screenshots : [],
+  };
+};
 
 const formatTags = (tags) =>
   tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
@@ -96,7 +194,7 @@ const renderEntries = (entries, selectedTag = "all") => {
           <p>${escapeHtml(entry.summary)}</p>
           <ul class="entry-notes">
             ${entry.notes.slice(0, 3).map((note) => `<li>${escapeHtml(note)}</li>`).join("")}
-            ${entry.notes.length > 3 ? `<li class="entry-more-note">还有 ${entry.notes.length - 3} 个复盘点</li>` : ''}
+            ${entry.notes.length > 3 ? `<li class="entry-more-note">还有 ${entry.notes.length - 3} 个复盘点</li>` : ""}
           </ul>
           <div class="tag-row">${formatTags(entry.tags)}</div>
           ${renderEvidence(entry.screenshots)}
@@ -118,29 +216,34 @@ const hydrateFilters = (entries) => {
   tagFilter.addEventListener("change", () => renderEntries(entries, tagFilter.value));
 };
 
-const diarySources = [
-  "./data/diary.json",
-  "./data/agentdiary.json",
-];
+const loadManifest = () =>
+  fetch("./data/diary-manifest.json")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`diary-manifest.json: HTTP ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((paths) => {
+      if (!Array.isArray(paths)) {
+        throw new Error("diary-manifest.json 根节点必须是数组");
+      }
+      return paths;
+    });
 
-const loadDiarySource = (source) =>
+const loadDiaryMarkdown = (source) =>
   fetch(source)
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`${source}: HTTP ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((entries) => {
-    if (!Array.isArray(entries)) {
-      throw new Error(`${source}: JSON 根节点必须是数组`);
-    }
-    return entries;
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`${source}: HTTP ${response.status}`);
+      }
+      return response.text();
+    })
+    .then((markdown) => parseDiaryMarkdown(markdown, source));
 
-Promise.all(diarySources.map(loadDiarySource))
+loadManifest()
+  .then((paths) => Promise.all(paths.map(loadDiaryMarkdown)))
   .then((entries) => {
-    entries = entries.flat();
     entries.sort((a, b) => new Date(b.date) - new Date(a.date));
     hydrateFilters(entries);
     renderEntries(entries);
