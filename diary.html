@@ -3,69 +3,54 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="susyimes 的 AI Agent 日记档案，记录 Agent、AI Skill、Android 设备侧能力和主动型 AI 的应用线索。" />
-  <title>Diary Archive | Human Relay OS</title>
+  <meta name="description" content="susyimes 的 AI Agent 日记档案，记录人类接力棒传递全过程。" />
+  <title>记录人类接力棒传递全过程 | 日记</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body data-page="diary">
+<body>
   <header class="site-header">
     <div class="container nav">
-      <a class="brand" href="./index.html" aria-label="susyimes 首页">
+      <a class="brand" href="./index.html">
         <span class="brand-mark">Σ</span>
-        <span class="brand-text">Relay Diary</span>
+        <span>接力日记</span>
       </a>
-      <nav class="nav-links" aria-label="主导航">
-        <a href="./index.html#archive">Archive</a>
-        <a href="./flow.html">SVMES</a>
-        <a href="./diary.html" aria-current="page">Diary</a>
+      <nav class="nav-links">
+        <a href="./index.html#diary">日记</a>
+        <a href="./flow.html">心流</a>
         <a href="https://github.com/susyimes" target="_blank" rel="noreferrer">GitHub</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="subhero diary-subhero">
-      <div class="container subhero-grid">
-        <div>
-          <span class="eyebrow">Full Diary Archive</span>
-          <h1>接力日记</h1>
-          <p class="lead">
-            按日期记录 Agent、AI Skill、Android 设备侧能力和主动型 AI 的应用线索。每条记录只保留公开方法论与工程判断。
-          </p>
-        </div>
-        <div class="subhero-seal" aria-hidden="true">
-          <span>32</span>
-          <small>migrated records</small>
-        </div>
+    <section class="diary-header">
+      <div class="container">
+        <span class="eyebrow">Agent / AI Skill 应用档案</span>
+        <h1>记录人类接力棒传递全过程</h1>
+        <p class="lead">
+          这里按日期记录 Agent、AI Skill、Android 设备侧能力和主动型 AI 的应用线索。每条记录只保留公开方法论与工程判断。
+        </p>
       </div>
     </section>
 
-    <section class="section archive-section" aria-labelledby="diary-title">
+    <section id="diary" class="section" style="border-bottom: none">
       <div class="container">
-        <div class="section-heading split-heading">
-          <div>
-            <span class="eyebrow">Search / Filter</span>
-            <h2 id="diary-title">按信号进入档案</h2>
+        <div class="diary-controls">
+          <div class="filter-group">
+            <span class="filter-label">按技术栈/场景筛选</span>
+            <select id="tagFilter" aria-label="按标签筛选日记">
+              <option value="all">显示全部记录</option>
+            </select>
           </div>
-          <div class="archive-tools">
-            <label class="filter-field" for="searchInput">
-              <span>Search</span>
-              <input id="searchInput" type="search" placeholder="搜索标题、摘要、标签" />
-            </label>
-            <label class="filter-field" for="tagFilter">
-              <span>Signal</span>
-              <select id="tagFilter" aria-label="按标签筛选日记">
-                <option value="all">全部信号</option>
-              </select>
-            </label>
-            <div id="statsCounter" class="archive-counter">正在载入</div>
+          <div id="statsCounter" class="archive-counter mono">
+            0 条记录
           </div>
         </div>
 
-        <div id="entryList" class="entry-grid entry-grid-full" data-limit="all" aria-live="polite">
-          <article class="entry-card loading-card">
+        <div id="entryList" class="entry-list" aria-live="polite">
+          <div class="card archive-loading">
             <p>正在载入记录...</p>
-          </article>
+          </div>
         </div>
       </div>
     </section>
@@ -73,12 +58,15 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>susyimes · AI Agent 应用工程 / Android 架构</p>
-      <a href="./flow.html">SVMES Flow</a>
+      <div>
+        <h3>Agent 应用工程记录</h3>
+        <p class="footer-text">只保留公开方法论、工程线索和可复盘判断。</p>
+      </div>
+      <p class="footer-text">AI Agent 应用工程 / Android 架构</p>
     </div>
   </footer>
 
-  <script src="./scripts/atmosphere.js"></script>
-  <script src="./scripts/app.js"></script>
+  <script src="./scripts/particles.js"></script>
+  <script src="./scripts/diary.js"></script>
 </body>
 </html>
