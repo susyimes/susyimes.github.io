@@ -1,0 +1,576 @@
+[
+  {
+    "id": "agent-trace",
+    "date": "2026-05-11",
+    "title": "Agent 决策链路的可追溯性实验",
+    "type": "engineering",
+    "tags": [
+      "Trace",
+      "Observability",
+      "Governance",
+      "Harness"
+    ],
+    "summary": "通过 TendrilFlow 记录 Agent 的思维链与工具调用序列，确保交接后的每一个动作都有据可查。",
+    "notes": [
+      "问题：Agent 的自主行动往往是黑盒，人类难以追责。",
+      "方案：在 Harness 层拦截所有 LLM 响应，记录原始 Prompt、输出与中间状态。",
+      "结果：在本地 Dashboard 展示完整任务执行链路，方便复盘幻觉风险和工具风险。"
+    ]
+  },
+  {
+    "id": "openclaw-self-healing",
+    "date": "2026-03-02",
+    "title": "OpenClaw 故障后的 Agent 自修复",
+    "type": "recovery",
+    "tags": [
+      "OpenClaw",
+      "Self-healing",
+      "Agent Ops"
+    ],
+    "summary": "一次 OpenClaw 故障被另一只 OpenClaw 协助修好，形成了“Agent 维护 Agent”的早期证据。",
+    "notes": [
+      "问题：单个 Agent 工具链损坏后，人类不希望完全回到手工排障。",
+      "观察：另一个 Agent 可以承担诊断、定位和修复建议的协助角色。",
+      "价值：这是多 Agent 运维、自修复和工具链冗余的一次小样本。"
+    ]
+  },
+  {
+    "id": "agent-plugin-question",
+    "date": "2026-03-08",
+    "title": "Agent 不是 LLM 挂插件",
+    "type": "concept",
+    "tags": [
+      "Agent Theory",
+      "Harness",
+      "Tool Use"
+    ],
+    "summary": "围绕“Agent 是否只是 LLM 挂几个插件”的问题，开始把 Agent 能力从插件调用扩展到上下文、状态、计划、治理和持续执行。",
+    "notes": [
+      "问题：如果 Agent 只被理解成 LLM 加插件，很难解释自主性和持续性。",
+      "判断：插件只是手，Harness、状态管理、目标保持和复盘机制才是行动结构。",
+      "简历价值：这条线可以支撑 Agent 应用工程岗位中的架构理解。"
+    ]
+  },
+  {
+    "id": "agent-memory-log-summary",
+    "date": "2026-03-10",
+    "title": "通过日志摘要强化 Agent 记忆",
+    "type": "memory",
+    "tags": [
+      "Memory",
+      "Context",
+      "Log Summary",
+      "Skill"
+    ],
+    "summary": "把工作日志、历史对话和操作结果压缩为可复用记忆，让 Agent 不再每次从零开始。",
+    "notes": [
+      "问题：长流程任务中，Agent 容易遗忘前因后果。",
+      "方案：用日志摘要把关键状态、已尝试方案、失败原因和下一步压成长期上下文。",
+      "边界：摘要必须保留证据指针，避免记忆被幻觉污染。"
+    ]
+  },
+  {
+    "id": "subagent-refactor",
+    "date": "2026-03-15",
+    "title": "区域化代码重构与 Debug Agent",
+    "type": "workflow",
+    "tags": [
+      "Subagent",
+      "Refactor",
+      "Review",
+      "Testing"
+    ],
+    "summary": "把重构风险交给 Agent 判断：subagent 做区域化修改，debug agent 检查逻辑一致性和测试结果。",
+    "notes": [
+      "问题：代码一周一重构时，单个 Agent 容易误判影响面。",
+      "设计：实现 Agent 负责局部修改，Debug Agent 负责逻辑吻合与测试通过。",
+      "治理：人类验收不只看代码能跑，还看重构是否破坏原始意图。"
+    ]
+  },
+  {
+    "id": "resource-finder-skill",
+    "date": "2026-03-19",
+    "title": "Download Anything：资源检索 Skill",
+    "type": "skill",
+    "tags": [
+      "AI Skill",
+      "Automation",
+      "Download",
+      "Tool Use"
+    ],
+    "summary": "把重复性的资源搜索、视频下载、音视频合并和文件整理交给 AI Skill 执行。",
+    "notes": [
+      "问题：搜索资源、确认链接、下载、合并音视频都是低创造性重复劳动。",
+      "方案：让 Skill 负责检索、下载、合并、命名和结果报告。",
+      "启发：AI Skill 的价值不在炫技，而在把人类的笨重流程变成可复用工具。"
+    ]
+  },
+  {
+    "id": "openclaw-lark-cli",
+    "date": "2026-03-30",
+    "title": "用 OpenClaw 自动化飞书 CLI",
+    "type": "automation",
+    "tags": [
+      "OpenClaw",
+      "CLI",
+      "Workflow",
+      "Automation"
+    ],
+    "summary": "在飞书开源 CLI 的基础上，用 OpenClaw 把办公流程转成 Agent 可执行的自动化任务。",
+    "notes": [
+      "问题：办公软件里的动作常常重复，但分散在不同入口。",
+      "方案：优先使用 CLI 暴露稳定动作，再由 Agent 做任务拆解和调用。",
+      "意义：比直接模拟 UI 更稳定，也更适合作为企业 Agent 应用底座。"
+    ]
+  },
+  {
+    "id": "openclaw-memory-upgrade",
+    "date": "2026-04-01",
+    "title": "OpenClaw 记忆能力升级",
+    "type": "memory",
+    "tags": [
+      "OpenClaw",
+      "Memory",
+      "Context"
+    ],
+    "summary": "围绕 OpenClaw 的“记更多”和 token 管理，探索怎样把临时对话转成长期可用的工程记忆。",
+    "notes": [
+      "问题：Agent 只靠当前窗口上下文，很难积累个人工作风格。",
+      "方案：把任务记录、失败路径、偏好和项目规则沉淀为可检索记忆。",
+      "边界：记忆要可删除、可解释、可复核，避免越积越脏。"
+    ]
+  },
+  {
+    "id": "openclaw-hermes-compare",
+    "date": "2026-04-09",
+    "title": "OpenClaw 与 Hermes 的打法差异",
+    "type": "comparison",
+    "tags": [
+      "OpenClaw",
+      "Hermes",
+      "Agent Framework",
+      "Harness"
+    ],
+    "summary": "比较 OpenClaw 自定义路线与 Hermes 全套方案，判断不同 Agent 工具箱适合的应用场景。",
+    "notes": [
+      "问题：不同 Agent 框架不是简单替代关系，适用打法不同。",
+      "观察：OpenClaw 更偏可塑的工作台，Hermes 更偏成体系的工具箱。",
+      "判断：选型应看任务复杂度、可观测性、权限边界和人类介入点。"
+    ]
+  },
+  {
+    "id": "openclaw-harness-autonomy",
+    "date": "2026-04-13",
+    "title": "为什么 OpenClaw 总等人说继续",
+    "type": "harness",
+    "tags": [
+      "OpenClaw",
+      "Harness",
+      "Autonomy",
+      "Proactive AI"
+    ],
+    "summary": "从“OpenClaw 总停下来等继续”切入，确认自主性不是纯模型属性，而是 Harness 设计属性。",
+    "notes": [
+      "问题：Agent 明明会做事，却总在关键节点停下来等用户确认。",
+      "结论：自主性来自循环控制、目标保持、权限边界、风险阈值和完成判定。",
+      "应用：主动型 AI 要设计低风险自动推进和高风险人类确认的分层机制。"
+    ]
+  },
+  {
+    "id": "agent-toolchain-stack",
+    "date": "2026-04-13",
+    "title": "多 AI 工具链的组织方式",
+    "type": "toolchain",
+    "tags": [
+      "Claude Code",
+      "Codex",
+      "Cursor",
+      "OpenClaw",
+      "Toolchain"
+    ],
+    "summary": "整理 Claude Code、Codex、Cursor、OpenClaw 等工具如何分工，而不是把多个 AI 工具堆在一起。",
+    "notes": [
+      "问题：同时使用多种 AI 编程工具容易混乱，产物和上下文难以交接。",
+      "方向：按任务阶段拆分：理解、计划、编码、审查、复盘、归档。",
+      "价值：这是 Agent 应用工程中非常实际的工具编排能力。"
+    ]
+  },
+  {
+    "id": "proactive-assistant",
+    "date": "2026-04-14",
+    "title": "5 分钟巡检一次的主动 AI 助理",
+    "type": "proactive",
+    "tags": [
+      "Proactive AI",
+      "Automation",
+      "Observe Agent"
+    ],
+    "summary": "设想个人 AI 助理定时检查 master 正在做什么，并在合适时机主动协助。",
+    "notes": [
+      "问题：人类不一定会主动请求帮助，但工作状态可能已经需要协助。",
+      "方案：Observe Agent 定时读取状态，判断是否需要派发支持任务。",
+      "边界：主动性要低噪声，不能把提醒变成新的打扰源。"
+    ]
+  },
+  {
+    "id": "android-agent",
+    "date": "2026-04-15",
+    "title": "Android 设备侧 Agent 感知闭环",
+    "type": "android",
+    "tags": [
+      "Android",
+      "Accessibility",
+      "UsageEvents",
+      "Agent"
+    ],
+    "summary": "用 Android 收集器、定时提醒器、设备状态和使用统计，支撑 Agent 在手机侧做主动判断。",
+    "notes": [
+      "场景：Agent 需要理解设备使用状态，而不是只依赖用户输入。",
+      "Agent 行为：读取结构化状态，判断是否需要提醒、记录或触发下一步。",
+      "人的判断：限制权限范围，确认哪些数据适合长期保存。"
+    ]
+  },
+  {
+    "id": "multi-agent",
+    "date": "2026-04-16",
+    "title": "Work / Observe / Assist 三类 Agent",
+    "type": "architecture",
+    "tags": [
+      "Multi-Agent",
+      "Observe Agent",
+      "Assist Agent",
+      "Work Agent"
+    ],
+    "summary": "把 Agent 组织拆成三类：Work Agent 持续执行，Observe Agent 读取状态，Assist Agent 主动介入支持。",
+    "notes": [
+      "Work Agent：处理实际任务、代码、业务逻辑和具体动作。",
+      "Observe Agent：通过 CLI 或状态接口读取 Work Agent 的进度、记录和风险。",
+      "Assist Agent：不直接扑向 Work Agent，而是向 Observe Agent 问询后接支持型任务。",
+      "意义：这是多 Agent 协作从“多开几个窗口”变成组织结构的关键一步。"
+    ]
+  },
+  {
+    "id": "emotion-agent",
+    "date": "2026-04-17",
+    "title": "情绪询问器与性格情感型 Agent",
+    "type": "affective",
+    "tags": [
+      "Affective Agent",
+      "AI Psychology",
+      "Persona",
+      "OpenClaw"
+    ],
+    "summary": "给 OpenClaw 设置情绪询问器，让情绪状态影响输出风格和交互策略。",
+    "notes": [
+      "问题：人格型 Agent 不能只有固定人设，还需要当前情绪状态和互动记忆。",
+      "方案：通过情绪询问器采集状态，再影响回复力度、主动性和安抚策略。",
+      "延展：这条线连接 AI 心理学、Persona、长期记忆和主动交互。"
+    ]
+  },
+  {
+    "id": "autodream-skill-composition",
+    "date": "2026-04-20",
+    "title": "AutoDream 的 Skill 组合",
+    "type": "skill",
+    "tags": [
+      "AI Skill",
+      "AutoDream",
+      "Composition",
+      "Proactive AI"
+    ],
+    "summary": "通过 AutoDream 组合不同 Skill，让 Agent 不只调用单一工具，而是能组织多个能力完成任务。",
+    "notes": [
+      "问题：单个 Skill 像一个动作，多 Skill 组合才接近可复用工作流。",
+      "方案：按目标拆出资源、记忆、执行、复核等模块，组合成任务链。",
+      "方向：让 Agent 主动进化，逐步沉淀更高层级的技能组合。"
+    ]
+  },
+  {
+    "id": "agent-org-collaboration",
+    "date": "2026-04-21",
+    "title": "协作、对抗、分布、并行",
+    "type": "organization",
+    "tags": [
+      "Multi-Agent",
+      "Parallel",
+      "Review",
+      "Governance"
+    ],
+    "summary": "把 Agent 组织从单线执行扩展到协作、对抗、分布和并行，让不同 Agent 承担不同判断角色。",
+    "notes": [
+      "协作：不同 Agent 共享目标和上下文。",
+      "对抗：审查 Agent 挑错，避免执行 Agent 自说自话。",
+      "分布/并行：把探索、实现、验证拆开，提高速度和可靠性。"
+    ]
+  },
+  {
+    "id": "skill-gene-performance",
+    "date": "2026-04-22",
+    "title": "Skill 太多会拖慢模型吗",
+    "type": "skill",
+    "tags": [
+      "AI Skill",
+      "Gene",
+      "Performance",
+      "Context"
+    ],
+    "summary": "围绕 Skill 数量、推理预算和策略式 Gene 的关系，思考 Skill 应该如何被压缩、选择和装配。",
+    "notes": [
+      "问题：Skills 越多，模型上下文负担越大，性能可能下降。",
+      "方向：把常用策略抽成更轻的 Gene，而不是把所有流程都塞成长 Skill。",
+      "应用：Skill 系统需要路由、裁剪、摘要和性能观测。"
+    ]
+  },
+  {
+    "id": "github-agent",
+    "date": "2026-04-24",
+    "title": "只用 GitHub 网页版养出一个 AI 项目",
+    "type": "workflow",
+    "tags": [
+      "GitHub",
+      "Agent",
+      "No IDE",
+      "Workflow"
+    ],
+    "summary": "观察一种极端工作流：全程不打开 IDE，只用 GitHub 网页版和 Agent 推动项目演进。",
+    "notes": [
+      "问题：如果 IDE 不是必需入口，Agent 如何通过 GitHub issue、PR 和网页上下文完成交付？",
+      "价值：这能验证 Agent 对仓库、任务、审查和发布流程的端到端掌控能力。",
+      "边界：需要更强的可观测性和人类验收，避免远程修改失控。"
+    ]
+  },
+  {
+    "id": "model-beyond-ability",
+    "date": "2026-04-25",
+    "title": "模型之外的能力是什么",
+    "type": "research",
+    "tags": [
+      "Agent Theory",
+      "Tool Use",
+      "AI Skill",
+      "Evaluation"
+    ],
+    "summary": "核心追问：当模型能力趋同后，真正区分 Agent 应用的“模型之外能力”是什么。",
+    "notes": [
+      "候选答案：工具、记忆、上下文组织、权限系统、任务分解、反馈闭环和产品化场景。",
+      "工程答案：谁能把模型放进真实流程里，谁就拥有模型之外的能力。",
+      "方法：用真实任务而不是静态问答来评估 Agent。"
+    ]
+  },
+  {
+    "id": "guardian-agent",
+    "date": "2026-04-25",
+    "title": "Guardian Agent：AI 写完，AI 先审",
+    "type": "review",
+    "tags": [
+      "Guardian Agent",
+      "Review",
+      "Testing",
+      "Governance"
+    ],
+    "summary": "在 AI 写完代码后，由另一个 AI 先审一遍，再交给人类运行和验收。",
+    "notes": [
+      "问题：执行 Agent 容易相信自己的改动，缺少外部审查。",
+      "方案：引入 Guardian Agent 做风险识别、测试建议和行为回归检查。",
+      "价值：这是多 Agent 对抗协作在工程落地中的典型模式。"
+    ]
+  },
+  {
+    "id": "accessibility-agent-data",
+    "date": "2026-04-26",
+    "title": "无障碍埋点与成功路径记忆",
+    "type": "android",
+    "tags": [
+      "Accessibility",
+      "Android",
+      "Success Path",
+      "Agent"
+    ],
+    "summary": "分析无障碍数据，简化无障碍树，只取关键信息和坐标，并存储成功路径。",
+    "notes": [
+      "问题：完整无障碍树太大，Agent 容易迷路。",
+      "方案：抽取关键节点、坐标、动作和结果，形成更小的可操作状态。",
+      "长期价值：存储成功路径，让 Agent 越用越了解应用。"
+    ]
+  },
+  {
+    "id": "android-accessibility-design",
+    "date": "2026-04-28",
+    "title": "Agent 如何通过无障碍操作手机",
+    "type": "android",
+    "tags": [
+      "Android",
+      "Accessibility",
+      "ADB",
+      "Mobile Agent"
+    ],
+    "summary": "围绕“Agent 通过无障碍操作手机怎么实现”形成设计问题，并开始用 ADB 与 Kimi 做交互测试。",
+    "notes": [
+      "问题：Agent 如何理解当前页面、决定操作、执行动作并确认结果？",
+      "实验：通过内部 ADB 与 Kimi 对话，排查卡点和输入失败问题。",
+      "方向：屏幕快照、a11y 数据、模型决策和动作循环需要合成一个闭环。"
+    ]
+  },
+  {
+    "id": "model-driven-action-loop",
+    "date": "2026-04-29",
+    "title": "模型根据无障碍树循环操作直到成功",
+    "type": "android",
+    "tags": [
+      "Accessibility",
+      "Action Loop",
+      "Shizuku",
+      "Mobile Agent"
+    ],
+    "summary": "脚本不固定死，由模型读取页面无障碍树后决定操作，并循环直到成功。",
+    "notes": [
+      "策略：不要每次都记路径，只有用户反馈成功后再沉淀为成功路径。",
+      "能力：结合 Shizuku 与手机修改能力，扩展 Agent 的真实设备控制面。",
+      "限制：操作次数上限、失败回退和用户确认必须进入 Harness 设计。"
+    ]
+  },
+  {
+    "id": "screen-snapshot-a11y",
+    "date": "2026-04-29",
+    "title": "Screen 快照整合图像文本与 a11y",
+    "type": "android",
+    "tags": [
+      "Screen Snapshot",
+      "Accessibility",
+      "Vision",
+      "Tool Use"
+    ],
+    "summary": "Screen 快照不仅要有图像，还要携带 OCR 文本和无障碍结构，供 Agent 做更可靠的动作判断。",
+    "notes": [
+      "问题：只有截图会丢结构，只有 a11y 树会丢视觉上下文。",
+      "方案：把图像、文字、节点、坐标和可执行动作合并为统一快照。",
+      "意义：这是移动端 Agent 从看见到能做的关键中间层。"
+    ]
+  },
+  {
+    "id": "symphony-task-center",
+    "date": "2026-04-30",
+    "title": "Symphony：让 Codex 自己接单干活",
+    "type": "orchestration",
+    "tags": [
+      "Codex",
+      "Linear",
+      "Task Center",
+      "Agent Workflow"
+    ],
+    "summary": "把 Linear 看板变成 Codex 的任务流中心：Agent 自动领活、写代码、提 PR、等待 review。",
+    "notes": [
+      "问题：Agent 的任务入口分散，难以形成可追踪生产流。",
+      "方案：用看板作为任务源，让 Codex 按状态领取、执行和交付。",
+      "价值：这是从助手到团队成员的工作流转变。"
+    ]
+  },
+  {
+    "id": "mobile-agent-self-programming",
+    "date": "2026-05-01",
+    "title": "手机 Agent 自编程与 Tool 架构迁移",
+    "type": "android",
+    "tags": [
+      "Mobile Agent",
+      "Tool Architecture",
+      "Self-programming",
+      "Dynamic UI"
+    ],
+    "summary": "探索手机 Agent 自己写 tool、自己生成功能，以及 Compose / dynamic UI / mini webapp 的动态界面方向。",
+    "notes": [
+      "问题：移动端 Agent 不能永远等开发者手写每个按钮和工具。",
+      "方向：迁移 tool 架构，让 Agent 能生成、注册、调用和复盘自己的工具。",
+      "界面：通过 dynamic UI 或 mini webapp 临时生成任务界面。"
+    ]
+  },
+  {
+    "id": "agent-miniapp-builder",
+    "date": "2026-05-03",
+    "title": "让 Agent 构建模型智能小程序",
+    "type": "builder",
+    "tags": [
+      "AI Skill",
+      "Mini App",
+      "Tool Use",
+      "Agent Builder"
+    ],
+    "summary": "把接口能力开放出来，让 Agent 可以根据任务构建模型智能小程序。",
+    "notes": [
+      "问题：很多任务需要临时 UI 和临时工具，但不值得人工完整开发。",
+      "方案：开放接口能力，让 Agent 生成小程序、连接模型、执行任务。",
+      "边界：生成的小程序需要权限声明、数据边界和可撤销机制。"
+    ]
+  },
+  {
+    "id": "gitnexus-code-graph",
+    "date": "2026-05-05",
+    "title": "GitNexus：让编程 Agent 读懂代码图谱",
+    "type": "code-intelligence",
+    "tags": [
+      "Code Graph",
+      "MCP",
+      "Claude Code",
+      "Codex",
+      "Repository"
+    ],
+    "summary": "通过代码知识图谱记录函数调用、导入和类继承关系，让 Claude Code、Codex 等 Agent 更少破坏依赖。",
+    "notes": [
+      "问题：编程 Agent 常因不了解函数关系而误改代码。",
+      "方案：为仓库构建知识图谱，并通过 MCP 让 Agent 查询。",
+      "价值：这是代码库级别上下文增强，比单纯把文件塞进 prompt 更稳。"
+    ]
+  },
+  {
+    "id": "heavy-skill-agent-inner-work",
+    "date": "2026-05-07",
+    "title": "Heavy Skill：重度思考是 Agent 的内功",
+    "type": "skill",
+    "tags": [
+      "Heavy Skill",
+      "Reasoning",
+      "AI Skill",
+      "Agent Theory"
+    ],
+    "summary": "把深度思考内化为 Agent 的基础能力，通过并行推理和汇总审议提升复杂任务表现。",
+    "notes": [
+      "问题：Agent 不能只靠更复杂的编排框架，也要提高自身推理质量。",
+      "方案：用重度思考、并行推理和审议汇总提升计划质量。",
+      "定位：Heavy Skill 更像底层心法，而不是单次工具调用。"
+    ]
+  },
+  {
+    "id": "codex-official-cases",
+    "date": "2026-05-09",
+    "title": "Codex 官方案例与工程化参照",
+    "type": "reference",
+    "tags": [
+      "Codex",
+      "Case Study",
+      "Agent Engineering"
+    ],
+    "summary": "整理 Codex 官方案例，作为 Agent 应用工程、代码协作和工具链设计的外部参照。",
+    "notes": [
+      "目标：从真实案例里提取可复用的任务边界、工具调用方式和交付模式。",
+      "价值：让个人项目不只是想法，也能对齐工程化实践。",
+      "方向：继续沉淀成简历和作品集里的 Agent 工程证据。"
+    ]
+  },
+  {
+    "id": "philosophy-logic-emergence",
+    "date": "2026-05-09",
+    "title": "哲学、逻辑与智能涌现",
+    "type": "reflection",
+    "tags": [
+      "Philosophy",
+      "Logic",
+      "Emergence",
+      "Agent Theory"
+    ],
+    "summary": "把真正的能力理解为哲学和逻辑思维，并观察大模型碰撞是否可能产生新的智能形态。",
+    "notes": [
+      "问题：当模型越来越强，人的差异在哪里？",
+      "判断：真正的能力不是会不会问模型，而是能否提出有结构的问题和判断标准。",
+      "延展：多模型、多 Agent、长记忆和真实工具环境可能带来新的涌现现象。"
+    ]
+  }
+]

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="susyimes 的 AI Agent 日记档案，记录 Agent、AI Skill、Android 设备侧能力和主动型 AI 的应用线索。" />
+  <title>Diary Archive | susyimes</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-page="diary">
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="./index.html" aria-label="susyimes 首页">
+        <span class="brand-mark">Σ</span>
+        <span class="brand-text">Relay Diary</span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="./index.html#archive">Archive</a>
+        <a href="./flow.html">SVMES</a>
+        <a href="./diary.html" aria-current="page">Diary</a>
+        <a href="https://github.com/susyimes" target="_blank" rel="noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="subhero diary-subhero">
+      <div class="container subhero-grid">
+        <div>
+          <span class="eyebrow">Full Diary Archive</span>
+          <h1>接力日记</h1>
+          <p class="lead">
+            按日期记录 Agent、AI Skill、Android 设备侧能力和主动型 AI 的应用线索。每条记录只保留公开方法论与工程判断。
+          </p>
+        </div>
+        <div class="subhero-seal" aria-hidden="true">
+          <span>32</span>
+          <small>migrated records</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="section archive-section" aria-labelledby="diary-title">
+      <div class="container">
+        <div class="section-heading split-heading">
+          <div>
+            <span class="eyebrow">Search / Filter</span>
+            <h2 id="diary-title">按信号进入档案</h2>
+          </div>
+          <div class="archive-tools">
+            <label class="filter-field" for="searchInput">
+              <span>Search</span>
+              <input id="searchInput" type="search" placeholder="搜索标题、摘要、标签" />
+            </label>
+            <label class="filter-field" for="tagFilter">
+              <span>Signal</span>
+              <select id="tagFilter" aria-label="按标签筛选日记">
+                <option value="all">全部信号</option>
+              </select>
+            </label>
+            <div id="statsCounter" class="archive-counter">正在载入</div>
+          </div>
+        </div>
+
+        <div id="entryList" class="entry-grid entry-grid-full" data-limit="all" aria-live="polite">
+          <article class="entry-card loading-card">
+            <p>正在载入记录...</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>susyimes · AI Agent 应用工程 / Android 架构</p>
+      <a href="./flow.html">SVMES Flow</a>
+    </div>
+  </footer>
+
+  <script src="./scripts/atmosphere.js"></script>
+  <script src="./scripts/app.js"></script>
+</body>
+</html>
