@@ -1,3 +1,8 @@
+---
+title: "工作流更新：Symphony 预处理与 HumanRequired 分流"
+date: "2026-06-03"
+---
+
 # 工作流更新：Symphony 预处理与 HumanRequired 分流
 
 今天调整了工作流，加了一层预处理判断。
