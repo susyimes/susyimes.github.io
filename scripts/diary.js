@@ -20,13 +20,32 @@ const parseScalar = (value = "") => {
 
   if (
     (trimmed.startsWith('"') && trimmed.endsWith('"'))
-    || (trimmed.startsWith("[") && trimmed.endsWith("]"))
-    || (trimmed.startsWith("{") && trimmed.endsWith("}"))
+    || (trimmed.startsWith("'") && trimmed.endsWith("'"))
   ) {
     try {
       return JSON.parse(trimmed);
     } catch {
-      return trimmed.replace(/^"|"$/g, "");
+      return trimmed.replace(/^["']|["']$/g, "");
+    }
+  }
+
+  if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return trimmed
+        .slice(1, -1)
+        .split(/[,，]/)
+        .map((item) => parseScalar(item))
+        .filter(Boolean);
+    }
+  }
+
+  if (trimmed.startsWith("{") && trimmed.endsWith("}")) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return trimmed;
     }
   }
 
@@ -82,30 +101,74 @@ const extractNotes = (markdown) => {
 
   return source
     .split(/\r?\n/)
-    .map((line) => line.match(/^\s*-\s+(.*)$/))
+    .map((line) => line.match(/^\s*(?:[-*]|\d+\.)\s+(.*)$/))
     .filter(Boolean)
     .map((match) => match[1].trim())
     .filter(Boolean);
 };
 
-const parseDiaryMarkdown = (markdown, source) => {
-  const match = markdown.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
+const filenameFromSource = (source = "") =>
+  source.split(/[\\/]/).pop()?.replace(/\.md$/i, "") || "diary-entry";
 
-  if (!match) {
-    throw new Error(`${source}: 缺少 frontmatter`);
+const titleFromFilename = (source) =>
+  filenameFromSource(source)
+    .replace(/^\d{4}-\d{2}-\d{2}-?/, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
+
+const stripMarkdown = (value = "") =>
+  value
+    .replace(/!\[[^\]]*]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)]\([^)]*\)/g, "$1")
+    .replace(/[`*_>#-]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const excerptFromBody = (body) => {
+  const paragraph = body
+    .split(/\r?\n\s*\r?\n/)
+    .map((block) => block.trim())
+    .find((block) => block && !block.startsWith("#"));
+
+  const excerpt = stripMarkdown(paragraph || body).slice(0, 140);
+  return excerpt ? `${excerpt}${excerpt.length === 140 ? "..." : ""}` : "暂无摘要";
+};
+
+const normalizeList = (value) => {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
   }
 
-  const metadata = parseFrontmatter(match[1]);
-  const body = match[2].trim();
+  if (typeof value === "string" && value.trim()) {
+    return value.split(/[,，]/).map((item) => item.trim()).filter(Boolean);
+  }
+
+  return [];
+};
+
+const normalizeScreenshots = (value) =>
+  Array.isArray(value) ? value.filter((shot) => shot && typeof shot === "object") : [];
+
+const parseDiaryMarkdown = (markdown, source) => {
+  const match = markdown.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)([\s\S]*)$/);
+  const metadata = match ? parseFrontmatter(match[1]) : {};
+  const body = (match ? match[2] : markdown).trim();
+  const markdownTitle = body.match(/^#\s+(.+)$/m)?.[1]?.trim();
+  const fallbackTitle = titleFromFilename(source) || "未命名记录";
   const notes = extractNotes(body);
 
   return {
     ...metadata,
+    id: metadata.id || filenameFromSource(source),
+    date: metadata.date || source.match(/\d{4}-\d{2}-\d{2}/)?.[0] || "",
+    title: metadata.title || markdownTitle || fallbackTitle,
+    type: metadata.type || "reflection",
+    summary: metadata.summary || excerptFromBody(body),
     source,
     body,
-    tags: Array.isArray(metadata.tags) ? metadata.tags : [],
+    tags: normalizeList(metadata.tags),
     notes,
-    screenshots: Array.isArray(metadata.screenshots) ? metadata.screenshots : [],
+    screenshots: normalizeScreenshots(metadata.screenshots),
   };
 };
 
